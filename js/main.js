@@ -8,10 +8,10 @@ function toggleModifyAccess() {
 window.addEventListener('fetchInactiveUsers', fetchInactiveUsers);
 
 async function fetchInactiveUsers() {
-    alert('fegc');
     const jiraBaseUrl = document.getElementById('jiraBaseUrl').value;
     const jiraApiToken = document.getElementById('jiraApiToken').value;
     const jiraEmail = document.getElementById('jiraEmail').value;
+    const monthsInactive = document.getElementById('monthsInactive').value;
     try {
         const response = await fetch(`${jiraBaseUrl}/rest/api/3/users/search`, {
             headers: {
@@ -20,11 +20,10 @@ async function fetchInactiveUsers() {
             }
         });
         const users = await response.json();
-        const sixMonthsAgo = new Date();
-        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+        const monthsInactiveTime = new Date().setMonth(monthsInactiveTime.getMonth() - monthsInactive);
         const inactiveUsers = users.filter(user => {
             const lastLogin = new Date(user.lastLogin);
-            return lastLogin < sixMonthsAgo;
+            return lastLogin < monthsInactiveTime;
         });
         const userTable = document.getElementById('userTable');
         userTable.innerHTML = '';
@@ -40,12 +39,12 @@ async function fetchInactiveUsers() {
         });
     } catch (error) {
         console.error('Error fetching users:', error);
-        document.getElementById('output').innerText = 'Errore durante il recupero degli utenti: ' + error.message;
+        document.getElementById('output').innerText = 'Error fetching users: ' + error.message;
     }
 }
 
 async function updateUserAccess(userId, row) {
-    console.log('updated');
+    console.log('updated, nah');
     //if (!modifyAccess) {
     //    row.cells.innerText = 'Modifica accesso disabilitata';
     //    return;

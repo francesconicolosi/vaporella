@@ -7,11 +7,12 @@ module.exports = {
     entry: './js/main.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist/public'),
+        path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html',
+            filename: 'index.html',
             filename: 'index.html',
             inject: 'body',
             scriptLoading: 'blocking',
@@ -28,7 +29,11 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'css', to: 'css' },
-                { from: './js/server.js', to: '../server.js' },
+                { from: './api/server.js', to: 'api/server.js' },
+                { from: 'vercel.json', to: 'vercel.json' },
+                { from: 'package.json', to: 'package.json' },
+                { from: 'README.md', to: 'README.md' },
+
             ],
         }),
     ],

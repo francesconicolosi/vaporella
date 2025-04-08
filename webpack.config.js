@@ -7,7 +7,7 @@ module.exports = {
     entry: './js/main.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist/public'),
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -28,7 +28,7 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'css', to: 'css' },
-                { from: 'assets/icon.svg', to: 'icon.svg' },
+                { from: './js/server.js', to: '../server.js' },
             ],
         }),
     ],

@@ -13,14 +13,17 @@ async function fetchInactiveUsers() {
     const jiraEmail = document.getElementById('jiraEmail').value;
     const monthsInactive = document.getElementById('monthsInactive').value;
     try {
-        const response = await fetch(`${jiraBaseUrl}/rest/api/3/users/search`, {
+        const response = await fetch('/api/jira/users', {
+            method: 'POST',
             headers: {
-                'Authorization': `Basic ${btoa(`${jiraEmail}:${jiraApiToken}`)}`,
-                'Accept': 'application/json'
-            }
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ jiraBaseUrl, jiraApiToken, jiraEmail })
         });
+
         const users = await response.json();
-        const monthsInactiveTime = new Date().setMonth(monthsInactiveTime.getMonth() - monthsInactive);
+        console.log(users);
+        const monthsInactiveTime = new Date().setMonth(new Date().getMonth() - monthsInactive);
         const inactiveUsers = users.filter(user => {
             const lastLogin = new Date(user.lastLogin);
             return lastLogin < monthsInactiveTime;
@@ -39,7 +42,7 @@ async function fetchInactiveUsers() {
         });
     } catch (error) {
         console.error('Error fetching users:', error);
-        document.getElementById('output').innerText = 'Error fetching users: ' + error.message;
+        document.getElementById('output').innerText = 'Errore durante il recupero degli utenti: ' + error.message;
     }
 }
 
